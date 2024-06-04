@@ -18,6 +18,11 @@ Route::get('/storage-link', function () {
     dd(Artisan::output());
 });
 
+Route::get('/migrate-refresh', function () {
+    Artisan::call('migrate:fresh --seed');
+    dd(Artisan::output());
+});
+
 
 Route::group(['prefix' => 'config_api'], function () {//ok
     Route::match(['get', 'post', 'put', 'delete'],'/infoRequest', [ConfigurationApiController::class, 'infoRequest']);
