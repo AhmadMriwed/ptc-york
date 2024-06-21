@@ -22,12 +22,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware([])->group(function () {
     Route::post('register', [UserAuthController::class, 'register']);
     Route::post('login', [UserAuthController::class, 'login']);
-
     // Route::post('forgot-password', [ForgetPasswordController::class, 'sendOtpCode'] );
     // Route::post('validate-forgot-password-otp',[ForgetPasswordController::class, 'validateOtpCode']);
     // Route::post('reset-password',[ForgetPasswordController::class, 'resetPassword']);
-
-
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

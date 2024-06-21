@@ -17,6 +17,10 @@ Route::get('/storage-link', function () {
     Artisan::call('storage:link');
     dd(Artisan::output());
 });
+Route::get('/route-list', function () {
+    Artisan::call('route:list');
+    dd(Artisan::output());
+});
 
 Route::get('/migrate-refresh', function () {
     Artisan::call('migrate:fresh --seed');
