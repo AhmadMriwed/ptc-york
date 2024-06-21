@@ -21,7 +21,8 @@ class UserAuthResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'is_verified' => (bool)$this->email_verified_at != null,
-            'access_token' => $this->createToken('User API Token')->plainTextToken,
+            'access_token' => $this->createToken('Token Name')->accessToken,
+            // 'access_token' => $this->createToken('User API Token')->plainTextToken,
         ];
     }
 }
