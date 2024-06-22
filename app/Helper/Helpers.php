@@ -2,6 +2,7 @@
 
 namespace App\Helper;
 
+use App\Enums\Files\FileTypes;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -47,9 +48,9 @@ $paginatedResults = new LengthAwarePaginator(
     ['path' => request()->url()]
 );
 return $paginatedResults;
-    }
+}
 
-       function getFileType($file)
+ function getFileType($file)
     {
         $mimeType = $file->getMimeType();
         $extension = $file->getClientOriginalExtension();

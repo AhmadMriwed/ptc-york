@@ -11,6 +11,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ReplayBox extends Model
 {
     use HasFactory;
+    protected $fillable = [
+      'title',
+      'sub_title',
+      'show_date',
+      'send_id',
+      'request_id'
+  ];
     public function files()
     {
       return $this->belongsToMany(Files::class, ReplayBoxFile::class, 'replay_boxes_id', 'files_id')

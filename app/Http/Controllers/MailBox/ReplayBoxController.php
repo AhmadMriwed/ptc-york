@@ -16,6 +16,7 @@ use App\Models\MailBox\RequestBox;
 use App\Models\Media\Files;
 use App\Traits\Media;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use function Laravel\Prompts\error;
 
@@ -28,7 +29,7 @@ class ReplayBoxController extends Controller
     public function index()
     {
         $query = ReplayBox::query();
-        return ReplayBoxResource::collection($query->get()->paginate(10))->additional(['message' => __('messages.retrievedSuccessReplayBox')]);
+        return ReplayBoxResource::collection($query->paginate(10))->additional(['message' => __('messages.retrievedSuccessReplayBox')]);
     }
 
     /**
@@ -38,7 +39,7 @@ class ReplayBoxController extends Controller
     {
         $files=$this->upload_mulitple_files_with_details($request,'files',RequestBoxController::DIRECTORY_MAilBOX);
 
-        $replayBox=auth()->user->sendReplayBoxes()->create($request->validated());
+        $replayBox=Auth::user()->sendReplayBoxes()->create($request->validated());
         foreach($files as $file){
            $replayBox->files()->create($file->toArray());
         }
@@ -59,8 +60,8 @@ class ReplayBoxController extends Controller
 
     public function store_replay_without_files(ReplayBoxRequest $request)
     {
-
-        $replayBox=auth()->user->sendReplayBoxes()->create($request->validated());
+       
+        $replayBox=Auth::user()->sendReplayBoxes()->create($request->validated());
         $replayBox->files()->attach($request->file_ids);
 
         return ReplayBoxResource::make($replayBox)->additional(['message' => __('messages.createdSuccessReplayBox')]);
@@ -71,6 +72,8 @@ class ReplayBoxController extends Controller
      */
     public function show(ReplayBox $replyBox)
     {
+    
+
         return ReplayBoxResource::make($replyBox)->additional(['message' => __('messages.retrievedSuccessReplayBox')]);
     }
 

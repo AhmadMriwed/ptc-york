@@ -9,17 +9,11 @@ use App\Models\MailBox\RequestBox;
 use Illuminate\Http\Request;
 use App\Models\Media\Files;
 use App\Traits\Media;
-use App\Http\Controllers\Utils\Helper;
-use App\Http\Requests\MailBox\StoreRequestWithoutFilesRequest;
-use App\Http\Requests\MailBox\UploadFileRequest;
 use App\Http\Requests\Media\FilesRequest;
 use App\Http\Resources\MailBox\InfoMailBoxResource;
-use App\Http\Resources\MailBox\RequestReplayBoxResource;
 use App\Http\Resources\MailBox\RequestWithReplayBoxResource;
-use App\Models\MailBox\RequestBoxFile;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
-use Psy\Readline\Hoa\FileRead;
+use Illuminate\Support\Facades\Auth;
 
 class RequestBoxController extends Controller
 {
@@ -32,10 +26,10 @@ class RequestBoxController extends Controller
      public function getInfoMailBox()
     {
         $collect=collect();
-        $collect['count_new_recived_boxes']=auth()->user->recivedRequestBoxes()->count();
-        $collect['count_new_send_boxes']=auth()->user->sendRequestBoxes()->count();
-        $collect['count_recived_boxes']=auth()->user->recivedRequestBoxes()->count();
-        $collect['count_send_boxes']=auth()->user->sendRequestBoxes()->count();
+        $collect['count_new_recived_boxes']=Auth::user()->recivedRequestBoxes()->count();
+        $collect['count_new_send_boxes']=Auth::user()->sendRequestBoxes()->count();
+        $collect['count_recived_boxes']=Auth::user()->recivedRequestBoxes()->count();
+        $collect['count_send_boxes']=Auth::user()->sendRequestBoxes()->count();
         return InfoMailBoxResource::make($collect)->additional(['message' => __('messages.retrievedSuccess')]);;
     }
     public function index()
@@ -46,11 +40,11 @@ class RequestBoxController extends Controller
     }
     public function indexSend()
     {
-        return RequestBoxResource::collection(auth()->user->sendRequestBoxes()->paginate(10))->additional(['message' => __('messages.retrievedSuccessRequestBox')]);;
+        return RequestBoxResource::collection(Auth::user()->sendRequestBoxes()->paginate(10))->additional(['message' => __('messages.retrievedSuccessRequestBox')]);;
     }
     public function indexRecived()
     {
-        return RequestBoxResource::collection(auth()->user->recivedRequestBoxes()->paginate(10))->additional(['message' => __('messages.retrievedSuccessRequestBox')]);
+        return RequestBoxResource::collection(Auth::user()->recivedRequestBoxes()->paginate(10))->additional(['message' => __('messages.retrievedSuccessRequestBox')]);
     }
 
     /**
@@ -59,7 +53,7 @@ class RequestBoxController extends Controller
     public function store(RequestBoxRequest $request)
     {
      $files=$this->upload_mulitple_files_with_details($request,'files',RequestBoxController::DIRECTORY_MAilBOX);
-     $requestBox=auth()->user->sendRequestBoxes()->create($request->validated());
+     $requestBox=Auth::user()->sendRequestBoxes()->create($request->validated());
      foreach($files as $file){
         $requestBox->files()->create($file->toArray());
      }
@@ -78,7 +72,7 @@ class RequestBoxController extends Controller
     public function store_request_without_files(RequestBoxRequest $request)
     {
 
-        $requestwithoutfiles=auth()->user->sendRequestBoxes()->create($request->validated());
+        $requestwithoutfiles=Auth::user()->sendRequestBoxes()->create($request->validated());
         $requestwithoutfiles->files()->attach($request->file_ids);
 
         return RequestBoxResource::make($requestwithoutfiles)->additional(['message' => __('messages.createdSuccessRequestBox')]);

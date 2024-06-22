@@ -11,6 +11,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class RequestBox extends Model
 {
     use HasFactory;
+    protected $fillable = [
+      'send_id',
+      'recived_id',
+        'title',
+        'sub_title',
+        'show_date',
+        'request_type_id'
+    ];
+
     public function files()
     {
       return $this->belongsToMany(Files::class, RequestBoxFile::class, 'request_boxes_id', 'files_id')

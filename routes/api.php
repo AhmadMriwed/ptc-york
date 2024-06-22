@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\MailBox\ReplayBoxController;
 use App\Http\Controllers\MailBox\RequestBoxController;
+use App\Http\Controllers\MailBox\RequestTypeController;
+use App\Http\Controllers\MailBox\UserSearchController;
 use App\Http\Controllers\PlantsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -58,15 +60,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::group(['prefix' => 'replay'], function () {//ok
                 Route::post('', [ReplayBoxController::class, 'store_replay_without_files']);
                 Route::get('/', [ReplayBoxController::class, 'index']);
-                Route::get('/{ReplayBox}', [ReplayBoxController::class, 'show']);
-                Route::put('/{ReplayBox}', [ReplayBoxController::class, 'update']);
-                Route::delete('/{ReplayBox}', [ReplayBoxController::class, 'destroy']);
+                Route::get('/{replyBox}', [ReplayBoxController::class, 'show']);
+                Route::put('/{replyBox}', [ReplayBoxController::class, 'update']);
+                Route::delete('/{replyBox}', [ReplayBoxController::class, 'destroy']);
     
                 Route::post('/uploadFile', [ReplayBoxController::class, 'upload_files']);
                 // Route::post('/storeReplay', [ReplayBoxController::class, 'store_replay_without_files']);
             });
         });
-    
+        Route::group(['prefix' => 'users'], function () {//ok
+            Route::get('', [UserSearchController::class, 'getAllUsers']);
+        });
+        Route::group(['prefix' => 'request_type'], function () {//ok
+            Route::get('/', [RequestTypeController::class, 'searchByTerm']);
+        });
     
     
     });

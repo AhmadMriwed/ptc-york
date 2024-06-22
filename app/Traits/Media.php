@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\Http\Controllers\Utils\Helper;
 use App\Models\Media\Files;
+use App\Utils\Helper;
 use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Scalar\String_;
 
